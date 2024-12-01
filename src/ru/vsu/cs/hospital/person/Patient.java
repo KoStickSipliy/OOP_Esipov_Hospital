@@ -1,5 +1,6 @@
 package ru.vsu.cs.hospital.person;
 
+import ru.vsu.cs.hospital.DocException;
 import ru.vsu.cs.hospital.Illness;
 import ru.vsu.cs.hospital.MedicalCard;
 
@@ -118,18 +119,23 @@ public class Patient extends Person  implements DoctorsCare{
 
 
     @Override
-    public void assignDoctor(Doctor doc) {
+    public void assignDoctor(Doctor doc) throws DocException {
         if (doc.getLocation().equals(location) && !medCards.isEmpty()) {
            attendingDoctor = doc;
         } else if (!doc.getLocation().equals(location)) {
-            System.out.printf("Нет свободных докторов для пациента %s \n", passport);
+            throw new DocException("Нет свободных докторов для пациента");
         } else if (medCards.isEmpty()) {
-            System.out.printf("Нет болезней у пациента %s \n", passport);
+            throw new DocException("Нет болезней");
         }
     }
 
     @Override
-    public void updateMedCard(MedicalCard card, Illness ill, MedicalCard.Severity severity, String treatment) {
+    public void updateMedCard(MedicalCard card, Illness ill, MedicalCard.Severity severity, String treatment) throws DocException{
+        if (card.getIllness().equals(ill) &&
+            card.getSeverity().equals(severity) &&
+            card.getTreatment().equals(treatment)) {
+            return;
+        }
         card.setIllness(ill);
         card.setSeverity(severity);
         card.setTreatment(treatment);

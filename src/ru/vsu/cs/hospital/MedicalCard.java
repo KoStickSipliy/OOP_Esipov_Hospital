@@ -10,7 +10,7 @@ public class MedicalCard {
 
     {
         illness = null;
-        treatment = "Лечение не требуется";
+        treatment = "-";
         severity = null;
     }
 
@@ -70,6 +70,8 @@ public class MedicalCard {
         return Objects.hash(illness, treatment, severity, isTreated);
     }
 
+    // Возможны методы, в которых бы вычислялся порядок обхода пациентов докторами.
+    // Для этого нужны численные приоритеты в зависимости от тяжести.
     public enum Severity {
         LOW (3),
         MEDIUM (2),
